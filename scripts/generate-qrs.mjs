@@ -17,8 +17,8 @@ const SIZE = Number(process.env.QR_SIZE || 512)
 const MARGIN = Number(process.env.QR_MARGIN || 2)
 const ECL = process.env.QR_ECL || 'Q' // L | M | Q | H
 
-// Default card IDs (15 missions)
-const defaultIds = Array.from({ length: 15 }, (_, i) => `c${String(i + 1).padStart(2, '0')}`)
+// 001~015까지 만들도록 하드코딩 되어있음
+const defaultIds = Array.from({ length: 15 }, (_, i) => `CD-${String(i + 1).padStart(3, '0')}`)
 const cliIds = process.argv.slice(2).filter(Boolean)
 const cardIds = cliIds.length ? cliIds : defaultIds
 
@@ -29,8 +29,8 @@ async function ensureDir(dir) {
 }
 
 function buildUrl(cardId) {
-  // Hash routing to avoid 404 on static hosting
-  return `${BASE_URL}/#/cards/${cardId}?v=1`
+  // Clean URL for BrowserRouter with Netlify redirects
+  return `${BASE_URL}/cards/${cardId}?v=1`
 }
 
 async function generateOne(cardId) {
@@ -113,4 +113,3 @@ main().catch((err) => {
   console.error(err)
   process.exit(1)
 })
-

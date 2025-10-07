@@ -36,11 +36,19 @@ MOA-app(React + TypeScript + Vite) 컨트리뷰션 가이드입니다. 변경은
 - 테스트: `npm run build && npm run preview` → 브라우저 DevTools > Application > Service Workers에서 설치 확인.
 
 ## 코딩 스타일 & FSD
-- TS + 함수형 컴포넌트/훅, 2스페이스, UTF-8/LF.
-- 네이밍: 컴포넌트 `PascalCase`, 변수/훅 `camelCase`, 폴더 `kebab-case`.
-- FSD 레이어: `shared → features → pages → app`. 공개 API는 각 슬라이스 `index.ts`로만 소비, 크로스-피처 직접 import 금지.
+- 들여쓰기 2스페이스, UTF-8/LF, TS + 함수형 컴포넌트/훅.
+- 네이밍 규칙: 폴더명 `kebab-case`(예: `cards-mission`), 파일명 `PascalCase`(예: `MissionForm.tsx`), 함수·변수 `camelCase`.
+- 배럴: 각 슬라이스는 `index.ts`로 공개 API만 노출, 외부에서는 배럴만 import.
+- FSD 레이어: `shared → features → pages → app`. 상향 의존 금지, 크로스-피처 직접 import 금지.
+
+## FSD 구조 정리(리팩터 권장안)
+- 도메인 슬라이스 예시: `features/auth`, `features/cards-mission`, `features/analytics`, `features/sharing`.
+- 슬라이스 내부: `ui/`(컴포넌트), `model/`(상태·유효성), `api/`(HTTP), `lib/`(헬퍼), `index.ts`(공개 API).
+- pages는 라우팅·조립만 담당하고 슬라이스를 통해서만 사용.
+- entities는 도메인 최소 단위 표시/타입, widgets는 여러 feature를 묶는 섹션일 때만 사용.
+- 임시 전환 계획: 1) `features/cards` → `features/cards-mission`로 명확화 2) cross-import를 배럴 경유로 교체 3) pages가 features 외 내부 폴더를 참조하지 않도록 정리.
 
 ## 보안 & 설정
 - 비밀키(서비스키)·토큰은 저장소에 커밋 금지. HTTPS·CORS 엄격 관리.
-- QR 정책: 단기 `/#/cards/:cardId?v=1`(정적) → 장기 `/scan/{token}?v=2`(서버 검증)로 전환.
+- QR 정책: 단기 `/#/cards/:slug?v=1`(정적, 예: CD-001) → 장기 `/scan/{token}?v=2`(서버 검증)로 전환.
 - HTTP 설정 중앙화: `src/shared/lib/axios.ts`.
