@@ -26,3 +26,7 @@ dist-ssr
 
 # env
 .env
+
+# dummy
+dummy.ts
+dummy.tsx
