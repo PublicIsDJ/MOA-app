@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo } from 'react'
+import  { Suspense, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { cardRegistry } from '../../features/cards/cards-mission/config/registry'
 
