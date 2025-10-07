@@ -1,4 +1,3 @@
-import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { CardsIndexPage } from '../pages/cards'
 import { MissionPage } from '../pages/cards/MissionPage'
