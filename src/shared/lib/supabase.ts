@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js'
 
-dotenv.config();
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_API_KEY as string;
 
-const supabaseUrl = `${process.env.SUPABASE_URL}`;
-const supabseServiceKey = `${process.env.SUPABASE_SERVICE_KEY}`; // 관리자 키
-
-export const supabase = createClient(supabaseUrl, supabseServiceKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
