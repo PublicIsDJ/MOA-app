@@ -19,8 +19,22 @@
   }
 }
 
-body {
+html,body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  height: 100%
+}
+
+
+@layer utils {
+  /* MARK: - 풀 블리드 (양쪽 끝까지 확장) */
+  .full-bleed {
+    position: relative;
+    width: 100vw;
+    left:50%;
+    right:50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
 }
