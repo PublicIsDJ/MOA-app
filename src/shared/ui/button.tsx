@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement>{
-    status: 'default' | 'incative'
+    status: 'default' | 'inactive'
     children: ReactNode;
     className?: string;
 }
