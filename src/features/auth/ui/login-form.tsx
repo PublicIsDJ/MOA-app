@@ -1,5 +1,5 @@
 import { InputField } from '@/shared/ui/input-filed';
-import { LoginFormState } from '../types';
+import { LoginFormState } from '../login/types';
 
 interface Props {
     formData: LoginFormState;
