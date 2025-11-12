@@ -37,4 +37,18 @@ html,body {
     margin-left: -50vw;
     margin-right: -50vw;
   }
+
+  /* MARK: - 밑에서 올라오는 애니메이션 */
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
 }
