@@ -95,3 +95,9 @@ html,body {
     -webkit-backface-visibility: hidden;
   }
 }
+
+@layer components {
+  .card-input-form {
+    @apply flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-6 py-10
+  }
+}
