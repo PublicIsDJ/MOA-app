@@ -1,5 +1,5 @@
 'use client';
-
+// TODO: shared로 분리
 import Image from 'next/image';
 
 interface Props {

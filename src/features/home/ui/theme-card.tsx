@@ -53,7 +53,7 @@ export function ThemeCardGrid() {
     const themeRoutes: Record<string, string> = {
         '나': '/me',
         '시간': '/time',
-        '공간': '/space',
+        '공간': '/place',
         '소통': '/com',
     };
 
