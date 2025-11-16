@@ -1,3 +1,5 @@
+// TODO: 리팩토링 필요, List 형태가 아니라 하나의 요소로 
+
 interface FormField {
     label: string;
     placeholders: string[];
