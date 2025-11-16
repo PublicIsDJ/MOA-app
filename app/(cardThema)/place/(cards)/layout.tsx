@@ -7,7 +7,7 @@ export default function CardsLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen flex flex-col bg-white full-bleed">
+        <div className="min-h-screen flex flex-col bg-white full-bleed pb-8" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom) + 2rem)' }}>
             <Container>
                 <AuthHeader title='공간' className="py-[11px]"/>
                 <div className="flex-1">

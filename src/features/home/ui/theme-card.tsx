@@ -28,14 +28,14 @@ export function ThemeCard({ theme, onClick, disabled = false, delay = 0 }: Props
             type="button"
             onClick={disabled ? undefined : onClick}
             disabled={disabled}
-            className='relative w-full aspect-square bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow overflow-hidden animate-fade-in-up'
+            className='relative w-full aspect-square bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow overflow-clip animate-fade-in-up'
             style={{ animationDelay: `${delay}ms` }}
         >
             <div className='flex flex-col items-start h-full'>
                 <h2 className='text-xl font-bold text-gray-900'>{theme.theme}</h2>
                 <p className='text-sm text-gray-500 mt-1'>{theme.description}</p>
-                <p className='text-4xl mt-auto ml-auto'>{theme.icon}</p>
             </div>
+            <p className='text-4xl absolute bottom-3 right-3'>{theme.icon}</p>
 
             {/* MARK: 비활성화 오버레이 */}
             {disabled && (
