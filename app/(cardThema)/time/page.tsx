@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Container } from "@/shared/ui/container";
 import { BottomNavigation } from "@/shared/ui/bottom-nav";
+import { CardListItem } from "@/features/cardThema/me/ui/card-list-item";
 
 
 
@@ -22,7 +23,7 @@ export default function TimeCardsPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#F0F0F0] full-bleed">
+        <div className="min-h-screen flex flex-col bg-[#F0F0F0] full-bleed pb-[60px]">
             <div className="flex-1 flex items-center justify-center">
                 <Container>
                     <h1 className="text-2xl font-bold mb-6">시간 테마</h1>

@@ -72,20 +72,23 @@ export function BottomNavigation({className = ''}: Props) {
         router.push(path);
     };
 
-    // MARK: 전체 컨테이너
+    // MARK: 전체 컨테이너 (Safe Area 적용)
     return (
-        <div className={`full-bleed min-h-[94px] bg-white border-t border-gray-200 shadow-[0_-2px_8px_rgba(0,0,0,0.08)] ${className}`}>
-            <div className="flex items-center justify-around py-3">
+        <div
+            className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-2px_8px_rgba(0,0,0,0.08)] ${className}`}
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
+            <div className="flex items-center justify-around py-2">
                 {navItems.map((item) => (
                     <button
                         key={item.id}
                         type="button"
                         onClick={() => handleTabClick(item.path)}
-                        className="flex flex-col items-center gap-1 transition-colors"
+                        className="flex flex-col items-center gap-0.5 transition-colors py-1"
                     >
                         {typeof item.icon === 'function' ? item.icon(activeTab === item.id) : item.icon}
                         <span
-                            className={`text-xs font-medium transition-colors ${
+                            className={`text-[10px] font-medium transition-colors ${
                                 activeTab === item.id
                                     ? 'text-[#3E56F6]'
                                     : 'text-gray-400'
