@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Container } from "@/shared/ui/container";
 import { BottomNavigation } from "@/shared/ui/bottom-nav";
-import { CardListItem } from "@/features/cardThema/me/ui/card-list-item";
+
 
 
 const cards = [
