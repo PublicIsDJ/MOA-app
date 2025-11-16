@@ -1,6 +1,6 @@
 import { Container } from "@/shared/ui/container";
 import { ThemeCardGrid } from "@/features/home/ui/theme-card";
-import { BottomNavigation } from "@/shared/ui/bottom-nave";
+import { BottomNavigation } from "@/shared/ui/bottom-nav";
 
 export default function HomePage() {
   return (
