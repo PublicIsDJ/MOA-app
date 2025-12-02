@@ -1,6 +1,6 @@
 'use client';
 
-import { CardDetailView } from '@/features/cardThema/me/ui/card-detail-view';
+import { CardDetailView } from '@/shared/ui/card-detail-view';
 import TalentForm from '@/widgets/cardThema/time/talent-form';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/button';

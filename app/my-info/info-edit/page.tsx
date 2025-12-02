@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import { Button } from '@/shared/ui/button';
-import { CloseButton } from '@/shared/ui/cancle-button';
+import { CloseButton } from '@/shared/ui/close-button';
 import { InputBox } from '@/shared/ui/input-box';
 
-export default function infoEdit() {
+export default function InfoEditPage() {
 
     return(
         <div className="min-h-screen bg-white">

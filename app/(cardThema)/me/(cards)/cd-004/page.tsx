@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { CardDetailView } from '@/features/cardThema/me/ui/card-detail-view';
+import { CardDetailView } from '@/shared/ui/card-detail-view';
 import { InputBox } from '@/shared/ui/input-box';
 import { Button } from '@/shared/ui/button';
 // import { MY_FEATURES } from '@/features/cardThema/me/constants/taste';
