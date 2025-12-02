@@ -10,7 +10,7 @@ const context = [
     { icon: '🐌', text: '내 속도에 맞춰서 자유롭게 적어주세요' },
 ];
 
-export default function beforeGuide() {
+export default function BeforeGuidePage() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">

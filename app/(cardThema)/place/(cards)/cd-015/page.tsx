@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { CardDetailView } from '@/features/cardThema/me/ui/card-detail-view';
+import { CardDetailView } from '@/shared/ui/card-detail-view';
 import { Button } from '@/shared/ui/button';
 import { MyLastForm } from '@/widgets/cardThema/place/my-last-form';
 

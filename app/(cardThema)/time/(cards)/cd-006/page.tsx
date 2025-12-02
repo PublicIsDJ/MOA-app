@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CardDetailView } from '@/features/cardThema/me/ui/card-detail-view';
+import { CardDetailView } from '@/shared/ui/card-detail-view';
 import { Button } from '@/shared/ui/button';
 import { TIME_SEASON } from '@/features/cardThema/time/constant/season';
 import { TasteForm } from '@/features/cardThema/time/ui/season-form';

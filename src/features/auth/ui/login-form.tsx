@@ -1,4 +1,4 @@
-import { InputField } from '@/shared/ui/input-filed';
+import { InputField } from '@/shared/ui/input-field';
 import { LoginFormState } from '../login/types';
 
 interface Props {

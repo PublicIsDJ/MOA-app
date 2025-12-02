@@ -3,129 +3,192 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/button';
-import { InputBox } from '@/shared/ui/input-box';
 import { AuthHeader } from '@/features/auth/ui/auth-header';
+import { InputBox } from '@/shared/ui/input-box';
 import { SignUpFormState, InitialSignUpForm } from '@/features/auth/sign-up/types';
+
+const TOTAL_STEPS = 3;
 
 export default function SignUpPage() {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState<SignUpFormState>(InitialSignUpForm);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleInputChange = (name: string, value: string) => {
-        setFormData(prev => ({ ...prev, [name]: value }));
+    // MARK: 폼 필드 업데이트
+    const updateField = (field: keyof SignUpFormState, value: string) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
         setError(null);
     };
 
-    // MARK: 회원가입 처리
-    const handleSignUp = async () => {
-        console.log('회원가입 버튼 클릭됨', formData);
+    // MARK: 스텝별 유효성 검사
+    const validateStep = (): boolean => {
+        if (currentStep === 1) {
+            if (!formData.userName.trim()) {
+                setError('이름을 입력해주세요.');
+                return false;
+            }
+            if (!formData.phoneNumber.trim()) {
+                setError('휴대폰 번호를 입력해주세요.');
+                return false;
+            }
+        }
+        if (currentStep === 2) {
+            if (!formData.userId.trim()) {
+                setError('아이디를 입력해주세요.');
+                return false;
+            }
+        }
+        if (currentStep === 3) {
+            if (!formData.password) {
+                setError('비밀번호를 입력해주세요.');
+                return false;
+            }
+            if (formData.password !== formData.passwordConfirm) {
+                setError('비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+        }
+        return true;
+    };
 
-        // 유효성 검사
-        if (!formData.userId || formData.userId.length < 4) {
-            setError('아이디는 4자 이상 입력해주세요.');
-            return;
+    // MARK: 다음 스텝
+    const handleNext = () => {
+        if (!validateStep()) return;
+        setError(null);
+        if (currentStep < TOTAL_STEPS) {
+            setCurrentStep((prev) => prev + 1);
         }
-        if (!formData.phoneNumber || formData.phoneNumber.length < 10) {
-            setError('휴대폰 번호를 정확히 입력해주세요.');
-            return;
-        }
-        if (!formData.password || formData.password.length < 8) {
-            setError('비밀번호는 8자 이상 입력해주세요.');
-            return;
-        }
-        if (formData.password !== formData.passwordConfirm) {
-            setError('비밀번호가 일치하지 않습니다.');
-            return;
-        }
+    };
 
+    // MARK: 회원가입 완료
+    const handleComplete = async () => {
+        if (!validateStep()) return;
         setIsLoading(true);
-        setError(null);
-
-        // TODO: api 호출 처리
+        // TODO: API 호출
         alert('회원가입이 완료되었습니다!');
-        router.push('/login');
+        router.push('/first-login');
     };
+
+    // MARK: 스텝별 콘텐츠
+    const stepContents: Record<number, { title: string; subtitle: string }> = {
+        1: { title: '회원가입을 위해', subtitle: '본인인증이 필요해요' },
+        2: { title: '로그인에 사용할', subtitle: '아이디를 입력해주세요' },
+        3: { title: '개인정보 보호를 위해', subtitle: '비밀번호를 설정해주세요' },
+    };
+
+    const { title, subtitle } = stepContents[currentStep];
+    const isLastStep = currentStep === TOTAL_STEPS;
 
     return (
-        <div className="relative min-h-screen flex flex-col items-start bg-white">
+        <div className="min-h-screen flex flex-col bg-white">
             {/* 헤더 */}
-            <AuthHeader title="회원가입" className="mt-5" />
+            <AuthHeader title="회원가입" className="mt-5 px-4" />
 
-            {/* 회원가입 폼 */}
-            <div className="flex flex-col justify-center mt-14 mb-7 w-full">
-                <h1 className="text-xl font-bold text-gray-900 whitespace-pre">
-                    {'회원가입을 위해\n정보를 입력해주세요'}
-                </h1>
+            {/* 인디케이터 */}
+            <div className="flex self-center justify-center mt-4 space-x-2">
+                {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+                    <div
+                        key={i}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                            currentStep === i + 1 ? 'bg-blue-500' : 'bg-gray-300'
+                        }`}
+                    />
+                ))}
             </div>
 
-            {/* MARK: 회원가입 폼 */}
-            <div className="w-full flex flex-col gap-4">
-                <div>
-                    <p className='text-sm font-medium text-gray-700 mb-2'>아이디</p>
-                    <div className='flex gap-2'>
-                        <InputBox
-                            name="userId"
-                            placeholder="아이디 (4자 이상)"
-                            type="text"
-                            className='py-[12px] flex-3'
-                            value={formData.userId}
-                            onChange={(e) => handleInputChange('userId', e.target.value)}
-                        />
-                        <Button status='default' className='flex-1 transition-colors'>중복 확인</Button>
+            {/* 메인 콘텐츠 */}
+            <div className="flex-1 flex flex-col px-4 mt-6">
+                {/* 타이틀 */}
+                <h1 className="text-xl font-bold text-gray-900 mb-1">{title}</h1>
+                <p className="text-xl font-bold text-gray-900 mb-6">{subtitle}</p>
+
+                {/* Step 1: 본인인증 */}
+                {currentStep === 1 && (
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-1 block">이름</label>
+                            <InputBox
+                                name="userName"
+                                placeholder="이름 입력"
+                                value={formData.userName}
+                                onChange={(e) => updateField('userName', e.target.value)}
+                                className="py-3"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-1 block">휴대폰 번호</label>
+                            <InputBox
+                                name="phoneNumber"
+                                placeholder="휴대폰 번호 입력('-' 제외)"
+                                value={formData.phoneNumber}
+                                onChange={(e) => updateField('phoneNumber', e.target.value)}
+                                className="py-3"
+                            />
+                        </div>
                     </div>
+                )}
 
-                </div>
+                {/* Step 2: 아이디 입력 */}
+                {currentStep === 2 && (
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-1 block">아이디</label>
+                            <InputBox
+                                name="userId"
+                                placeholder="아이디 입력"
+                                value={formData.userId}
+                                onChange={(e) => updateField('userId', e.target.value)}
+                                className="py-3"
+                            />
+                        </div>
+                    </div>
+                )}
 
-                <div>
-                    <p className='text-sm font-medium text-gray-700 mb-2'>휴대폰 번호</p>
-                    <InputBox
-                        name="phoneNumber"
-                        placeholder="010-1234-5678"
-                        type="tel"
-                        className='py-[12px]'
-                        value={formData.phoneNumber}
-                        onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                    />
-                </div>
+                {/* Step 3: 비밀번호 설정 */}
+                {currentStep === 3 && (
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-1 block">비밀번호</label>
+                            <InputBox
+                                name="password"
+                                type="password"
+                                placeholder="비밀번호 입력"
+                                value={formData.password}
+                                onChange={(e) => updateField('password', e.target.value)}
+                                className="py-3"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-700 mb-1 block">비밀번호 확인</label>
+                            <InputBox
+                                name="passwordConfirm"
+                                type="password"
+                                placeholder="비밀번호 확인"
+                                value={formData.passwordConfirm}
+                                onChange={(e) => updateField('passwordConfirm', e.target.value)}
+                                className="py-3"
+                            />
+                        </div>
+                    </div>
+                )}
 
-                <div>
-                    <p className='text-sm font-medium text-gray-700 mb-2'>비밀번호</p>
-                    <InputBox
-                        name="password"
-                        placeholder="비밀번호 (8자 이상)"
-                        type="password"
-                        className='py-[12px]'
-                        value={formData.password}
-                        onChange={(e) => handleInputChange('password', e.target.value)}
-                    />
-                </div>
-
-                <div>
-                    <p className='text-sm font-medium text-gray-700 mb-2'>비밀번호 확인</p>
-                    <InputBox
-                        name="passwordConfirm"
-                        placeholder="비밀번호 확인"
-                        type="password"
-                        className='py-[12px]'
-                        value={formData.passwordConfirm}
-                        onChange={(e) => handleInputChange('passwordConfirm', e.target.value)}
-                    />
-                </div>
+                {/* 에러 메시지 */}
+                {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
             </div>
 
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
-            {/* MARK: 가입 버튼 */}
-            <Button
-                status="default"
-                className="absolute bottom-5 w-full py-[12px] mt-[30px]"
-                onClick={handleSignUp}
-                disabled={isLoading}
-            >
-                {isLoading ? '가입 중...' : '가입하기'}
-            </Button>
+            {/* 하단 버튼 */}
+            <div className="px-4 pb-10">
+                <Button
+                    status="default"
+                    className="py-3"
+                    onClick={isLastStep ? handleComplete : handleNext}
+                    disabled={isLoading}
+                >
+                    {isLoading ? '처리 중...' : isLastStep ? '회원가입 완료' : '다음으로'}
+                </Button>
+            </div>
         </div>
     );
 }

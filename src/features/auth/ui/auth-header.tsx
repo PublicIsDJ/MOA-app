@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { CloseButton } from '@/shared/ui/cancle-button';
+import { CloseButton } from '@/shared/ui/close-button';
 
 interface Props {
     title: string;
