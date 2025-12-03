@@ -5,7 +5,6 @@ import { CardDetailView } from '@/shared/ui/card-detail-view';
 import { Button } from '@/shared/ui/button';
 import { HomeSelect } from '@/features/cardThema/place/ui/home-select';
 import { OutsideSelect } from '@/features/cardThema/place/ui/outside-select';
-import { FormList } from '@/shared/ui/form-list';
 import { InputBox } from '@/shared/ui/input-box';
 
 const fileds = [
