@@ -15,7 +15,7 @@ export function BottomNavigation({className = ''}: Props) {
     // MARK: 현재 경로에 따라 활성 탭 결정
     const getActiveTab = (): NavItem => {
         if (pathname === '/home') return 'home';
-        if (pathname?.startsWith('/cardThema')) return 'card'; // /cardThema/me, /cardThema/time, /cardThema/space 포함
+        if (pathname === '/card') return 'card'; 
         if (pathname === '/archive') return 'archive';
         if (pathname === '/profile') return 'profile';
         return 'home';
@@ -43,7 +43,7 @@ export function BottomNavigation({className = ''}: Props) {
                     <path fillRule="evenodd" clipRule="evenodd" d="M20.75 1.25H3.25V22.75H20.75V1.25ZM15.901 12L12 6.148L8.099 12L12 17.852L15.901 12ZM6 6V4H8V6H6ZM16 18V20H18V18H16Z" fill={isActive ? '#3E56F6' : '#9C9C9C'}/>
                 </svg>
             ),
-            path: '/cardThema'
+            path: '/card'
         },
         {
             id: 'archive',
