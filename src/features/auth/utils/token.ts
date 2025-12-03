@@ -34,6 +34,8 @@ export function clearTokens() {
 
 // 로그인 여부 확인
 export function isLoggedIn(): boolean {
-    return getAccessToken() !== null;
+    const token = getAccessToken();
+    // null, undefined, '', 'null', 'undefined' 모두 false 처리
+    return !!token && token !== 'null' && token !== 'undefined';
 }
 
