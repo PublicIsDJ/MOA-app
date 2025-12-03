@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/button';
 import { AuthHeader } from '@/features/auth/ui/auth-header';
 import { InputBox } from '@/shared/ui/input-box';
 import { SignUpFormState, InitialSignUpForm } from '@/features/auth/sign-up/types';
+import { register, login } from '@/features/auth/api/auth-api';
 
 const TOTAL_STEPS = 3;
 
@@ -66,9 +67,35 @@ export default function SignUpPage() {
     const handleComplete = async () => {
         if (!validateStep()) return;
         setIsLoading(true);
-        // TODO: API 호출
-        alert('회원가입이 완료되었습니다!');
-        router.push('/first-login');
+        setError(null);
+
+        try {
+            await register({
+                userId: formData.userId.trim(),
+                password: formData.password,
+                userName: formData.userName.trim(),
+                phoneNumber: formData.phoneNumber.trim() || null,
+            });
+
+            // 회원가입 후 자동 로그인
+            await login({
+                userId: formData.userId.trim(),
+                password: formData.password,
+            });
+
+            // 최초 로그인 페이지로 이동 (정보 입력)
+            router.push('/first-login');
+        } catch (err: any) {
+            console.error('회원가입 실패:', err);
+
+            if (err.response?.status === 400) {
+                setError('이미 사용 중인 아이디입니다.');
+            } else {
+                setError('회원가입에 실패했습니다. 다시 시도해주세요.');
+            }
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // MARK: 스텝별 콘텐츠

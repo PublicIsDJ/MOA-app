@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/button';
 import { FirstLoginFormState, InitialFirstLogin } from '@/features/auth/login/types';
 import { gender, age, features } from '@/types';
-import { mapGenderToBackend, mapFeaturesToBackend } from '@/features/auth/utils/mapper';
+import { mapGenderToBackend, mapAgeToBackend, mapFeaturesToBackend } from '@/features/auth/utils/mapper';
+import { updateMe } from '@/features/auth/api/auth-api';
 
 export default function FirstLoginPage() {
     const router = useRouter();
@@ -76,11 +77,25 @@ export default function FirstLoginPage() {
         setIsLoading(true);
         setError(null);
 
-        // TODO: 필드 변환
+        try {
+            // 프론트 → 백엔드 타입 변환
+            const gender = mapGenderToBackend(formData.gender);
+            const age = mapAgeToBackend(formData.age);
+            const interests = mapFeaturesToBackend(formData.features);
 
-        // 성공 시 홈으로 이동
-        alert('프로필 설정이 완료되었습니다!');
-        router.push('/home');
+            await updateMe({
+                gender,
+                age,
+                interests,
+            });
+
+            router.push('/home');
+        } catch (err: any) {
+            console.error('프로필 저장 실패:', err);
+            setError('프로필 저장에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

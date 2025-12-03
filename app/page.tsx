@@ -2,16 +2,22 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { isLoggedIn } from '@/features/auth/utils/token'
 
 export default function LandingPage() {
   const router = useRouter();
 
-  // MARK: 타임아웃
+  // MARK: 로그인 상태에 따라 분기
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/login')}, 2000)
-      return () => clearTimeout(timer) // 언마운트 시, 누수 관리
-    }, [router]);
+      if (isLoggedIn()) {
+        router.push('/home');       // 로그인됨 → 홈으로
+      } else {
+        router.push('/onboarding'); // 미로그인 → 온보딩으로
+      }
+    }, 2000);
+    return () => clearTimeout(timer); // 언마운트 시, 누수 관리
+  }, [router]);
 
   
   return (
