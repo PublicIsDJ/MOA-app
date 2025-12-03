@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -8,13 +7,18 @@ import { FirstLoginFormState, InitialFirstLogin } from '@/features/auth/login/ty
 import { gender, age, features } from '@/types';
 import { mapGenderToBackend, mapAgeToBackend, mapFeaturesToBackend } from '@/features/auth/utils/mapper';
 import { updateMe } from '@/features/auth/api/auth-api';
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 export default function FirstLoginPage() {
+    const { isChecking } = useAuthGuard();
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState<FirstLoginFormState>(InitialFirstLogin);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    if (isChecking) return <AuthLoading />;
 
     const ageRanges: { label: string; value: age }[] = [
         { label: '10대', value: '10' },

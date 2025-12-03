@@ -8,6 +8,8 @@ import { Button } from '@/shared/ui/button';
 import { InputBox } from '@/shared/ui/input-box';
 import { scanQrCode } from '@/features/card/api/card-api';
 import type { CardResponse } from '@/features/card/api/types';
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 const scanTips = [
     '카드의 텍스트가 잘 보이게 촬영해주세요',
@@ -16,8 +18,11 @@ const scanTips = [
 ];
 
 export default function QrPage() {
+    const { isChecking } = useAuthGuard();
     const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    if (isChecking) return <AuthLoading />;
     const [qrCode, setQrCode] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [capturedImage, setCapturedImage] = useState<string | null>(null);

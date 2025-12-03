@@ -1,8 +1,9 @@
 'use client';
 
-
 import { Button } from '@/shared/ui/button';
 import { BeforeButton } from '@/shared/ui/before-button';
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 const context = [
     { icon: '📝', text: '편안하게 나의 이야기를 적어주세요' },
@@ -11,6 +12,9 @@ const context = [
 ];
 
 export default function BeforeGuidePage() {
+    const { isChecking } = useAuthGuard();
+
+    if (isChecking) return <AuthLoading />;
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">

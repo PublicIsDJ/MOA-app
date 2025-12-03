@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import { AuthHeader } from '@/features/auth/ui/auth-header';
 import Image from 'next/image';
-
-
-
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 const context = [
     { icon: '✅', text: '완성한 카드', value: '5' },
@@ -20,7 +19,10 @@ const shareOptions = [
 ];
 
 export default function AfterCard() {
+    const { isChecking } = useAuthGuard();
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+    if (isChecking) return <AuthLoading />;
 
     return (
         <div className="relative min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">

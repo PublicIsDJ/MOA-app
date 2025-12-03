@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BottomNavigation } from '@/shared/ui/bottom-nav';
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 // MARK: 배너 데이터
 const banners = [
@@ -25,6 +27,10 @@ const headerIcons = [
 ];
 
 export default function HomePage() {
+    const { isChecking } = useAuthGuard();
+
+    if (isChecking) return <AuthLoading />;
+
     return (
         <div className="min-h-screen flex flex-col items-center bg-[#EDEDED] full-bleed pb-[88px]">
             <div className="w-full max-w-[430px] flex flex-col flex-1">

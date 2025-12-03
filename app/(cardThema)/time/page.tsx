@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Container } from "@/shared/ui/container";
 import { BottomNavigation } from "@/shared/ui/bottom-nav";
 import { CardListItem } from "@/features/cardThema/me/ui/card-list-item";
-
-
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 const cards = [
     { title: '좋아하는 계절', icon: '/cards-time/season.svg', route: '/time/cd-006' },
@@ -16,7 +16,10 @@ const cards = [
 ];
 
 export default function TimeCardsPage() {
+    const { isChecking } = useAuthGuard();
     const router = useRouter();
+
+    if (isChecking) return <AuthLoading />;
 
     const handleCardClick = (route: string) => {
         router.push(route);

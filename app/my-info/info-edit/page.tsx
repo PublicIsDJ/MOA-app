@@ -4,8 +4,13 @@ import Image from 'next/image';
 import { Button } from '@/shared/ui/button';
 import { CloseButton } from '@/shared/ui/close-button';
 import { InputBox } from '@/shared/ui/input-box';
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 export default function InfoEditPage() {
+    const { isChecking } = useAuthGuard();
+
+    if (isChecking) return <AuthLoading />;
 
     return(
         <div className="min-h-screen bg-white">

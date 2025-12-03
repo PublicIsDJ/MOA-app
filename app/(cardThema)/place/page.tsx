@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Container } from "@/shared/ui/container";
 import { BottomNavigation } from "@/shared/ui/bottom-nav";
 import { CardListItem } from "@/features/cardThema/me/ui/card-list-item";
-
+import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
+import { AuthLoading } from '@/shared/ui/auth-loading';
 
 const cards = [
     { title: '내가 좋아하는 공간', icon: '/cards-place/favorite.svg', route: '/place/cd-011' },
@@ -14,8 +15,11 @@ const cards = [
     { title: '나의 마지막', icon: '/cards-place/my-last.svg', route: '/place/cd-015' }
 ];
 
-export default function MeCardsPage() {
+export default function PlaceCardsPage() {
+    const { isChecking } = useAuthGuard();
     const router = useRouter();
+
+    if (isChecking) return <AuthLoading />;
 
     const handleCardClick = (route: string) => {
         router.push(route);
