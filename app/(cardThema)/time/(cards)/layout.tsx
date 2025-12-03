@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { AuthHeader,HeaderWithBefore } from "@/features/auth/ui/auth-header";
+import { AuthHeader, HeaderWithBefore } from "@/features/auth/ui/auth-header";
 import { Container } from "@/shared/ui/container";
 export default function CardsLayout({
     children,
