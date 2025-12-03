@@ -14,12 +14,14 @@ interface Props {
     fallbackPath?: string; 
 }
 
-export function AuthHeader({ title, showCloseButton = true, onClose, className = '' }: Props) {
+export function AuthHeader({ title, showCloseButton = true, onClose, fallbackPath, className = '' }: Props) {
     const router = useRouter();
 
     const handleClose = () => {
         if (onClose) {
             onClose();
+        } else if (fallbackPath) {
+            router.push(fallbackPath);
         } else {
             router.back();
         }

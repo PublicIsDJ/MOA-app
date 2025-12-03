@@ -17,9 +17,9 @@ export default function CardsLayout({
         <div className="min-h-screen flex flex-col bg-white full-bleed pb-8" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom) + 2rem)' }}>
             <Container>
                 {isFirstCard ? (
-                    <AuthHeader title="공간" className="py-[11px]" />
+                    <AuthHeader title="공간" className="py-[11px]" fallbackPath="/card" />
                 ) : (
-                    <HeaderWithBefore title="공간" className="py-[11px]" fallbackPath="/place"/>
+                    <HeaderWithBefore title="공간" className="py-[11px]" fallbackPath="/card"/>
                 )}
                 <div className="flex-1">{children}</div>
             </Container>
