@@ -21,7 +21,7 @@ export function BigSizeFormList({ fields, className = '', textareaClassName=""}:
                         <textarea
                             key={idx}
                             placeholder={placeholder}
-                            className={`bg-white resize-none h-32 ${textareaClassName}`}
+                            className={`bg-white resize-none rounded-[12px] px-[12px] py-3 h-32 ${textareaClassName}`}
                         /> ))}
                     
                 </div>
