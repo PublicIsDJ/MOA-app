@@ -1,16 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CardDetailView } from '@/shared/ui/card-detail-view';
-import { Button } from '@/shared/ui/button'
+import { Button } from '@/shared/ui/button';
 import { MY_FEATURES } from '@/features/cardThema/me/constants/sound';
+import { createActivity } from '@/features/activity';
+import { scanQrCode } from '@/features/card';
+import { initialSoundData, type SoundData } from '@/features/cardThema/me/types';
+
+const QR_CODE = 'CD-005';
 
 export default function CardOfSoundPage() {
     const router = useRouter();
-    const [selectedVoice, setSelectedVoice] = useState<number | null>(null);
-    const [selectedNature, setSelectedNature] = useState<number | null>(null);
-    const [selectedGeneral, setSelectedGeneral] = useState<number | null>(null);
+    const [formData, setFormData] = useState<SoundData>(initialSoundData);
+    const [cardId, setCardId] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchCardId = async () => {
+            try {
+                const card = await scanQrCode(QR_CODE);
+                setCardId(card.id);
+            } catch (error) {
+                console.error('카드 조회 실패:', error);
+            }
+        };
+        fetchCardId();
+    }, []);
+
+    const handleComplete = async () => {
+        if (!cardId) {
+            console.error('카드 ID를 찾을 수 없습니다');
+            router.push('/me');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await createActivity({
+                cardId,
+                activityResult: formData,
+            });
+            router.push('/me');
+        } catch (error) {
+            console.error('활동 저장 실패:', error);
+            router.push('/me');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
@@ -31,9 +70,9 @@ export default function CardOfSoundPage() {
                             <button
                                 key={index}
                                 type='button'
-                                onClick={() => setSelectedVoice(index)}
+                                onClick={() => setFormData(prev => ({ ...prev, voice: index }))}
                                 className={`aspect-[149/80] flex flex-col items-center justify-center py-2 px-[14px] rounded-[12px] transition-all ${
-                                    selectedVoice === index
+                                    formData.voice === index
                                         ? 'bg-[#4466D1] text-white'
                                         : 'bg-white text-gray-900 hover:bg-gray-50'
                                 }`}
@@ -53,9 +92,9 @@ export default function CardOfSoundPage() {
                             <button
                                 key={index}
                                 type='button'
-                                onClick={() => setSelectedNature(index)}
+                                onClick={() => setFormData(prev => ({ ...prev, nature: index }))}
                                 className={`aspect-[149/80] flex flex-col items-center justify-center py-2 px-[14px] rounded-[12px] transition-all ${
-                                    selectedNature === index
+                                    formData.nature === index
                                         ? 'bg-[#4466D1] text-white'
                                         : 'bg-white text-gray-900 hover:bg-gray-50'
                                 }`}
@@ -75,9 +114,9 @@ export default function CardOfSoundPage() {
                             <button
                                 key={index}
                                 type='button'
-                                onClick={() => setSelectedGeneral(index)}
+                                onClick={() => setFormData(prev => ({ ...prev, general: index }))}
                                 className={`aspect-[98/72] flex flex-col items-center justify-center py-2 px-[14px] rounded-[12px] transition-all ${
-                                    selectedGeneral === index
+                                    formData.general === index
                                         ? 'bg-[#4466D1] text-white'
                                         : 'bg-white text-gray-900 hover:bg-gray-50'
                                 }`}
@@ -92,8 +131,14 @@ export default function CardOfSoundPage() {
             </main>
 
             <footer className='w-full flex gap-5 mt-5 mb-25'>
-                <Button status='inactive' className='flex-1 py-[19px] rounded-[12px]' onClick={()=>router.back()}>이전으로</Button>
-                <Button className='flex-1 py-[19px] rounded-[12px]'>완료하기</Button>
+                <Button status='inactive' className='flex-1 py-[19px] rounded-[12px]' onClick={() => router.back()}>이전으로</Button>
+                <Button
+                    className='flex-1 py-[19px] rounded-[12px]'
+                    onClick={handleComplete}
+                    disabled={isLoading}
+                >
+                    {isLoading ? '저장 중...' : '완료하기'}
+                </Button>
             </footer>
         </>
     );
