@@ -1,3 +1,5 @@
+// TITLE: pwa 설정
+
 import type { MetadataRoute } from 'next'
  
 export default function manifest(): MetadataRoute.Manifest {
