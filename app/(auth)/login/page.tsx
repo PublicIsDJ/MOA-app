@@ -7,6 +7,7 @@ import { LoginForm } from '@/features/auth/ui/login-form';
 import { Button } from '@/shared/ui/button';
 import { TextRouter } from '@/features/auth/ui/text-router';
 import { login, getMe, isFirstLogin } from '@/features/auth/api/auth-api';
+import { redirectToKakaoLogin } from '@/features/auth/api/kakao-auth';
 import Image from 'next/image';
 
 export default function LoginPage() {
@@ -91,7 +92,8 @@ export default function LoginPage() {
 
             <button
                 type='button'
-                className='w-full rounded-md py-[12px] flex items-center justify-center gap-2 bg-white border-[1px] border-[#D9D9D9]'
+                onClick={redirectToKakaoLogin}
+                className='w-full rounded-md py-[12px] flex items-center justify-center gap-2 bg-[#FEE500] hover:bg-[#FDD800] transition-colors'
             >
                 <div className='relative w-6 h-6'>
                     <Image
@@ -101,7 +103,7 @@ export default function LoginPage() {
                         className='object-contain'
                     />
                 </div>
-                <p>카카오로 시작하기</p>
+                <p className='text-[#000000de] font-medium'>카카오로 시작하기</p>
             </button>
         </div>
     );
