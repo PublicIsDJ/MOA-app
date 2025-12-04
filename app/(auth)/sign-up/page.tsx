@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/button';
 import { AuthHeader } from '@/features/auth/ui/auth-header';
@@ -99,19 +99,20 @@ export default function SignUpPage() {
     };
 
     // MARK: 스텝별 콘텐츠
-    const stepContents: Record<number, { title: string; subtitle: string }> = {
-        1: { title: '회원가입을 위해', subtitle: '본인인증이 필요해요' },
-        2: { title: '로그인에 사용할', subtitle: '아이디를 입력해주세요' },
-        3: { title: '개인정보 보호를 위해', subtitle: '비밀번호를 설정해주세요' },
-    };
-
-    const { title, subtitle } = stepContents[currentStep];
+    const { title, subtitle } = useMemo(() => {
+        const map: Record<number, { title: string; subtitle: string }> = {
+            1: { title: '회원가입을 위해', subtitle: '본인인증이 필요해요' },
+            2: { title: '로그인에 사용할', subtitle: '아이디를 입력해주세요' },
+            3: { title: '개인정보 보호를 위해', subtitle: '비밀번호를 설정해주세요' },
+        };
+        return map[currentStep];
+    }, [currentStep]);
     const isLastStep = currentStep === TOTAL_STEPS;
 
     return (
-        <div className="min-h-screen flex flex-col bg-white">
+        <div className="min-h-screen flex flex-col bg-white px-4 pt-6 pb-6 full-bleed">
             {/* 헤더 */}
-            <AuthHeader title="회원가입" className="mt-5 px-4" />
+            <AuthHeader title="회원가입" className="px-2" />
 
             {/* 인디케이터 */}
             <div className="flex self-center justify-center mt-4 space-x-2">
@@ -126,10 +127,10 @@ export default function SignUpPage() {
             </div>
 
             {/* 메인 콘텐츠 */}
-            <div className="flex-1 flex flex-col px-4 mt-6">
+            <div className="flex-1 flex flex-col mt-6">
                 {/* 타이틀 */}
-                <h1 className="text-xl font-bold text-gray-900 mb-1">{title}</h1>
-                <p className="text-xl font-bold text-gray-900 mb-6">{subtitle}</p>
+                <h1 className="text-lg font-semibold text-gray-900 mb-1">{title}</h1>
+                <p className="text-lg font-semibold text-gray-900 mb-5">{subtitle}</p>
 
                 {/* Step 1: 본인인증 */}
                 {currentStep === 1 && (
@@ -206,10 +207,10 @@ export default function SignUpPage() {
             </div>
 
             {/* 하단 버튼 */}
-            <div className="px-4 pb-10">
+            <div className="mt-8">
                 <Button
                     status="default"
-                    className="py-3"
+                    className="py-[12px] rounded-[12px]"
                     onClick={isLastStep ? handleComplete : handleNext}
                     disabled={isLoading}
                 >

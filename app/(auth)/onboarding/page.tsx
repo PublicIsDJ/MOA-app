@@ -47,9 +47,9 @@ export default function OnboardingPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-2 py-10">
+        <div className="min-h-screen flex flex-col bg-white px-2 pt-8 pb-6 full-bleed">
             {/* 인디케이터 */}
-            <div className="flex justify-center mt-4 space-x-2">
+            <div className="flex justify-center space-x-2">
                 {steps.map((_, index) => (
                     <div
                         key={index}
@@ -61,19 +61,19 @@ export default function OnboardingPage() {
             </div>
 
             {/* 메인 콘텐츠 */}
-            <div className="flex-1 flex flex-col items-center justify-center text-center">
-                <div className="text-5xl mb-6">{step.emoji}</div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-3">
+            <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
+                <div className="text-5xl mb-6 md:mb-8">{step.emoji}</div>
+                <h1 className="text-2xl font-bold text-gray-900 mb-3 md:text-[28px] md:leading-9">
                     {step.title}
                 </h1>
-                <p className="text-center text-gray-500 text-base leading-relaxed whitespace-pre-line">
+                <p className="text-center text-gray-500 text-sm leading-relaxed whitespace-pre-line md:text-base">
                     {step.description}
                 </p>
             </div>
 
             {/* 하단 버튼 */}
-            <div className="w-full flex flex-col items-center">
-                <Button status="default" className="py-[12px]" onClick={handleNext}>
+            <div className="w-full flex flex-col items-center gap-3 mt-6">
+                <Button status="default" className="py-[12px] rounded-[12px] max-w-[320px]" onClick={handleNext}>
                     {isLastStep ? '회원가입' : '다음으로'}
                 </Button>
 
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
                     <button
                         type="button"
                         onClick={handleLogin}
-                        className="mt-4 text-xs font-bold text-gray-300"
+                        className="text-xs font-semibold text-gray-400"
                     >
                         이미 계정이 있으신가요?
                         <span className="text-gray-900 ml-1">로그인</span>
@@ -91,4 +91,3 @@ export default function OnboardingPage() {
         </div>
     );
 }
-
