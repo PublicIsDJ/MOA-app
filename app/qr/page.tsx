@@ -143,14 +143,14 @@ export default function QrPage() {
     if (isChecking) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center">
+        <div className="min-h-screen bg-black text-white flex flex-col items-center full-bleed">
             <div className="w-full max-w-[430px] flex flex-col flex-1">
                 {/* MARK: 헤더 */}
-                <header className="flex items-center justify-between px-5 py-4 bg-black/80 z-10">
-                    <Link href="/home" aria-label="뒤로가기" className="text-[28px] text-white">
+                <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 py-4 z-20">
+                    <Link href="/home" aria-label="뒤로가기" className="text-[28px] text-white drop-shadow-lg">
                         ‹
                     </Link>
-                    <h1 className="text-lg font-semibold">QR 스캔</h1>
+                    <h1 className="text-lg font-semibold drop-shadow-lg">QR 스캔</h1>
                     <span className="w-6" />
                 </header>
 
@@ -159,13 +159,14 @@ export default function QrPage() {
                     <div
                         id="qr-reader"
                         ref={scannerRef}
-                        className="flex-1 w-full"
+                        className="absolute inset-0 w-full h-full"
+                        style={{ minHeight: '100vh' }}
                     />
 
                     {/* 스캔 가이드 오버레이 */}
                     {isScanning && (
-                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                            <div className="w-64 h-64 border-2 border-white rounded-2xl relative">
+                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
+                            <div className="w-64 h-64 border-2 border-white/50 rounded-2xl relative">
                                 {/* 코너 강조 */}
                                 <div className="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-[#4E73FF] rounded-tl-lg" />
                                 <div className="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-[#4E73FF] rounded-tr-lg" />
@@ -176,7 +177,7 @@ export default function QrPage() {
                     )}
 
                     {/* 스캔 안내 */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 pb-10">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 pb-10 z-10">
                         {error ? (
                             <p className="text-red-400 text-center mb-4">{error}</p>
                         ) : (

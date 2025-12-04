@@ -111,3 +111,23 @@ html,body {
     @apply flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-6 py-10
   }
 }
+
+/* MARK: QR 스캐너 스타일 (html5-qrcode 라이브러리) */
+#qr-reader {
+  border: none !important;
+  background: black !important;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+#qr-reader__scan_region {
+  background: transparent !important;
+}
+
+#qr-reader__dashboard {
+  display: none !important;
+}
