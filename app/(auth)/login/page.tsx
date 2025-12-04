@@ -67,7 +67,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className='min-h-screen w-full flex flex-col items-center justify-center py-10'>
+        <div className='min-h-screen w-full flex flex-col items-center justify-center py-10 px-2'>
             <h1 className='text-[#3E56F6] text-[48px] font-bold mb-12'>MOA</h1>
 
             <section id='login-form' className='w-full'>

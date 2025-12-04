@@ -18,7 +18,7 @@ export function CardDetailView({
     frontImage,
 }: CardDetailViewProps) {
     return (
-        <div className='flex flex-col items-center justify-center py-10'>
+        <div className='flex flex-col items-center justify-center py-8'>
             {/* MARK: 카드 */}
             <section style={{ perspective: '1500px' }}>
                 <div
@@ -65,4 +65,3 @@ export function CardDetailView({
         </div>
     );
 }
-

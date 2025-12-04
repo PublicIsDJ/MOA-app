@@ -7,6 +7,14 @@ import { useAuthGuard } from '@/features/auth/hooks/useAuthGuard';
 import { AuthLoading } from '@/shared/ui/auth-loading';
 import { getMyActivities, type ActivityResponse } from '@/features/activity';
 import { getCard, type CardResponse } from '@/features/card';
+import { FAVORITE_PLACE } from '@/features/cardThema/place/constants/favorite';
+import { MY_TRAVEL } from '@/features/cardThema/place/constants/travle';
+import { ISLAND } from '@/features/cardThema/place/constants/island';
+import { MY_LAST } from '@/features/cardThema/place/constants/my-last';
+import { TIME_SEASON } from '@/features/cardThema/time/constant/season';
+import { TIME_FRIEND_WITH } from '@/features/cardThema/time/constant/friend';
+import { TIME_STAGE } from '@/features/cardThema/time/constant/stage';
+import { MY_FEATURES as ME_SOUND_FEATURES } from '@/features/cardThema/me/constants/sound';
 
 // MARK: 활동 + 카드 정보 타입
 interface ActivityWithCard extends ActivityResponse {
@@ -30,7 +38,7 @@ const LABEL_MAP: Record<string, string> = {
     birthYear: '태어난 해',
     birthSeason: '태어난 계절',
     babyDream: '나의 태몽',
-    zodiac: '나의 띠',
+   zodiac: '나의 띠',
 
     // cd-002: 나의 이름
     nameMeaning: '이름의 의미',
@@ -51,21 +59,88 @@ const LABEL_MAP: Record<string, string> = {
     // cd-005: 나의 소리
     voice: '목소리 톤',
     general: '일상의 소리',
+
+    // cd-011: 내가 좋아하는 공간
+    home: '집에서 좋아하는 장소',
+    outside: '밖에서 좋아하는 장소',
+    myPlace: '나만의 장소',
+    reason: '좋아하는 이유',
+
+    // cd-012: 나의 여행지
+    travelStyle: '여행 스타일',
+    bestTrip: '최고의 여행지',
+    worstTrip: '최악의 여행지',
+
+    // cd-013: 나만의 영화관
+    lifeMovies: '인생 영화 세 편',
+    cryMovie: '가장 많이 울었던 영화',
+    ownMovie: '소장하고 싶은 영화',
+    musicMovie: '음악이 좋았던 영화',
+    bestScene: '최고의 명장면',
+
+    // cd-014: 무인도에 간다면
+    withWho: '함께 있고 싶은 존재',
+    mostMiss: '가장 그리울 것',
+
+    // cd-015: 나의 마지막
+    lastMeal: '마지막 식사',
+    lastPlace: '마지막으로 있고 싶은 곳',
+    lastPerson: '마지막을 함께할 사람',
+    funeral: '장례 방식',
+    funeralCustom: '장례식 메모',
+    organDonation: '장기 기증 여부',
+
+    // cd-006: 좋아하는 계절
+    season: '좋아하는 계절',
+    taste: '좋아하는 계절의 맛',
+
+    // cd-007: 나의 몸
+    scar: '나의 흉터',
+    scarStory: '흉터에 담긴 이야기',
+
+    // cd-008: 나의 리듬
+    bigChange: '가장 큰 변화가 있던 시기',
+    bigChangeSub: '그때의 이야기',
+    strongEcho: '가장 강한 울림이 있던 시기',
+    strongEchoSub: '그때의 기억',
+
+    // cd-009: 나의 지인
+    oldest: '가장 오래된 지인',
+    recent: '가장 최근에 만난 지인',
+    petOwner: '반려동물을 키우는 지인',
+    liveAlone: '혼자 살고 있는 지인',
+    boughtMeFood: '나에게 밥을 사준 지인',
+    iBoughtFood: '내가 밥을 사준 지인',
+    wantToDo: '지인과 하고 싶은 것',
+    doWith: '지인과 하고 싶은 것',
+
+    // cd-010: 나의 무대
+    myTalent: '나의 재능',
+    wantNow: '지금 하고 싶은 것',
 };
 
+const mapOptions = <T extends { icon: string }>(
+    options: T[],
+    getName: (item: T) => string,
+): { icon: string; name: string }[] =>
+    options.map((item) => ({
+        icon: item.icon,
+        name: getName(item),
+    }));
+
 // MARK: 인덱스 → 실제 값 변환 (선택형 필드용)
-const INDEX_VALUE_MAP: Record<string, { icon: string; name: string }[]> = {
-    // cd-003: 나의 기질
+const GLOBAL_INDEX_VALUE_MAP: Record<string, { icon: string; name: string }[]> = {
+    // cd-003: 나의 기질 (fallback)
     nature: [
         { icon: '🔥', name: '불 (열정적, 급함)' },
         { icon: '💧', name: '물 (유연함, 온화함)' },
-        { icon: '🍃', name: '바람 (자유로움)' },
+        { icon: '🍃', name: '바람 (자유로움, 변덕스러움)' },
         { icon: '🪨', name: '돌 (묵직함, 신중함)' },
     ],
     personal: [
         { icon: '🐇', name: '토끼 (수줍음, 민감함)' },
         { icon: '🐅', name: '호랑이 (용감, 리더십)' },
-        { icon: '🐢', name: '거북이 (느긋함)' },
+        { icon: '🐢', name: '거북이 (느긋함, 신중함)' },
         { icon: '🦜', name: '새 (자유로움, 호기심)' },
     ],
     color: [
@@ -77,47 +152,121 @@ const INDEX_VALUE_MAP: Record<string, { icon: string; name: string }[]> = {
     object: [
         { icon: '📚', name: '책 (사색형)' },
         { icon: '👟', name: '신발 (활동형)' },
-        { icon: '🕯', name: '촛불 (감성)' },
-        { icon: '⏰️', name: '시계 (계획적)' },
+        { icon: '🕯', name: '촛불 (따뜻함, 감성)' },
+        { icon: '⏰️', name: '시계 (계획적, 철저함)' },
     ],
-    // cd-005: 나의 소리
-    voice: [
-        { icon: '🦁', name: '낮고 굵은' },
-        { icon: '🎶', name: '맑고 높은' },
-        { icon: '☁️', name: '부드러운' },
-        { icon: '⚡', name: '힘 있는' },
-    ],
-    natureSounds: [
-        { icon: '☔', name: '빗소리' },
-        { icon: '🌊', name: '파도소리' },
-        { icon: '🍃', name: '바람소리' },
-        { icon: '🕊️', name: '새소리' },
-        { icon: '🌳', name: '매미소리' },
-        { icon: '🦗', name: '풀벌레 소리' },
-        { icon: '🍂', name: '낙엽밟는 소리' },
-        { icon: '❄️', name: '눈 쌓이는 소리' },
-        { icon: '🔥', name: '장작타는 소리' },
-    ],
-    general: [
-        { icon: '📻', name: '라디오 소리' },
-        { icon: '🐈', name: '반려동물 소리' },
-        { icon: '🍳', name: '음식하는 소리' },
-    ],
+    // cd-005: 나의 소리 (fallback)
+    voice: mapOptions(ME_SOUND_FEATURES.voice, (item) => item.name),
+    general: mapOptions(ME_SOUND_FEATURES.general, (item) => item.name),
+    // place 테마
+    home: mapOptions(FAVORITE_PLACE.home, (item) => item.title),
+    outside: mapOptions(FAVORITE_PLACE.outside, (item) => item.title),
+    travelStyle: mapOptions(MY_TRAVEL, (item) => item.name),
+    withWho: mapOptions(ISLAND.withWho, (item) => item.name),
+    mostMiss: mapOptions(ISLAND.mostMiss, (item) => item.name),
+    funeral: mapOptions(MY_LAST.funeral, (item) => item.name),
+    organDonation: mapOptions(MY_LAST.organDonatino, (item) => item.name),
+    // time 테마
+    season: mapOptions(TIME_SEASON.season, (item) => item.title),
+    taste: mapOptions(TIME_SEASON.taste, (item) => item.title),
+    wantToDo: mapOptions(TIME_FRIEND_WITH, (item) => item.title),
+    doWith: mapOptions(TIME_FRIEND_WITH, (item) => item.title),
+    myTalent: mapOptions(TIME_STAGE.talent, (item) => item.name),
+    wantNow: mapOptions(TIME_STAGE.talent, (item) => item.name),
 };
 
-function formatLabel(key: string): string {
+const CARD_INDEX_VALUE_MAP: Record<string, Record<string, { icon: string; name: string }[]>> = {
+    'CD-003': {
+        nature: GLOBAL_INDEX_VALUE_MAP.nature,
+        personal: GLOBAL_INDEX_VALUE_MAP.personal,
+        color: GLOBAL_INDEX_VALUE_MAP.color,
+        object: GLOBAL_INDEX_VALUE_MAP.object,
+    },
+    'CD-005': {
+        voice: GLOBAL_INDEX_VALUE_MAP.voice,
+        nature: mapOptions(ME_SOUND_FEATURES.nature, (item) => item.name),
+        general: GLOBAL_INDEX_VALUE_MAP.general,
+    },
+    'CD-011': {
+        home: GLOBAL_INDEX_VALUE_MAP.home,
+        outside: GLOBAL_INDEX_VALUE_MAP.outside,
+    },
+    'CD-012': {
+        travelStyle: GLOBAL_INDEX_VALUE_MAP.travelStyle,
+    },
+    'CD-014': {
+        object: mapOptions(ISLAND.object, (item) =>
+            item.description ? `${item.name} (${item.description})` : item.name
+        ),
+        withWho: GLOBAL_INDEX_VALUE_MAP.withWho,
+        mostMiss: GLOBAL_INDEX_VALUE_MAP.mostMiss,
+    },
+    'CD-015': {
+        funeral: GLOBAL_INDEX_VALUE_MAP.funeral,
+        organDonation: GLOBAL_INDEX_VALUE_MAP.organDonation,
+    },
+    'CD-006': {
+        season: GLOBAL_INDEX_VALUE_MAP.season,
+        taste: GLOBAL_INDEX_VALUE_MAP.taste,
+    },
+    'CD-009': {
+        wantToDo: GLOBAL_INDEX_VALUE_MAP.wantToDo,
+        doWith: GLOBAL_INDEX_VALUE_MAP.doWith,
+    },
+    'CD-010': {
+        myTalent: GLOBAL_INDEX_VALUE_MAP.myTalent,
+        wantNow: GLOBAL_INDEX_VALUE_MAP.wantNow,
+    },
+};
+
+const CARD_LABEL_OVERRIDE_MAP: Record<string, Record<string, string>> = {
+    'CD-005': {
+        nature: '자연의 소리',
+        general: '일상의 소리',
+    },
+    'CD-014': {
+        object: '가져갈 물건',
+    },
+};
+
+function formatLabel(key: string, cardCode?: string): string {
+    if (cardCode && CARD_LABEL_OVERRIDE_MAP[cardCode]?.[key]) {
+        return CARD_LABEL_OVERRIDE_MAP[cardCode][key];
+    }
     if (LABEL_MAP[key]) return LABEL_MAP[key];
-    return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    return key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
 }
 
-function formatValue(key: string, value: unknown): string {
+function formatValue(key: string, value: unknown, cardCode?: string): string {
     // null 또는 undefined
     if (value === null || value === undefined) return '-';
 
+    const cardOptions = cardCode ? CARD_INDEX_VALUE_MAP[cardCode]?.[key] : undefined;
+    const options = cardOptions ?? GLOBAL_INDEX_VALUE_MAP[key];
+
+    if (Array.isArray(value)) {
+        if (value.length === 0) return '-';
+        if (options) {
+            const mapped = value
+                .map((index) => (typeof index === 'number' ? options[index] : undefined))
+                .filter((item): item is { icon: string; name: string } => Boolean(item))
+                .map((item) => `${item.icon} ${item.name}`);
+            if (mapped.length > 0) return mapped.join(', ');
+        }
+        return value.map((item) => String(item)).join(', ');
+    }
+
     // 숫자(인덱스)인 경우 매핑 확인
-    if (typeof value === 'number' && INDEX_VALUE_MAP[key]) {
-        const item = INDEX_VALUE_MAP[key][value];
-        if (item) return `${item.icon} ${item.name}`;
+    if (typeof value === 'number') {
+        if (options) {
+            const item = options[value];
+            if (item) return `${item.icon} ${item.name}`;
+        }
+        return String(value);
+    }
+
+    if (typeof value === 'string') {
+        return value.trim() === '' ? '-' : value;
     }
 
     return String(value);
@@ -317,8 +466,12 @@ export default function ArchivePage() {
                                                                 {activity.activityResult && typeof activity.activityResult === 'object' ? (
                                                                     Object.entries(activity.activityResult).map(([key, value]) => (
                                                                         <div key={key} className="bg-white/20 rounded-lg p-2">
-                                                                            <p className="text-white/70 text-[10px] uppercase tracking-wide">{formatLabel(key)}</p>
-                                                                            <p className="text-white font-medium mt-0.5 break-words">{formatValue(key, value)}</p>
+                                                                            <p className="text-white/70 text-[10px] uppercase tracking-wide">
+                                                                                {formatLabel(key, activity.card?.qrCode)}
+                                                                            </p>
+                                                                            <p className="text-white font-medium mt-0.5 break-words">
+                                                                                {formatValue(key, value, activity.card?.qrCode)}
+                                                                            </p>
                                                                         </div>
                                                                     ))
                                                                 ) : (

@@ -128,7 +128,7 @@ function BannerCarousel() {
                         return (
                             <div
                                 key={`${banner.id}-${index}`}
-                                className={`${banner.bgColor} min-w-full px-2 py-8 text-white`}
+                                className={`${banner.bgColor} min-w-full px-4 py-8 text-white`}
                             >
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-xl font-bold leading-snug whitespace-pre-line">

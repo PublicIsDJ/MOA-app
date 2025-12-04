@@ -1,16 +1,18 @@
 'use client';
-import { useState } from 'react';
+
 import { MY_TRAVEL } from '../constants/travle';
 
-export function TravelSelect() {
-    // TODO: formData로 수정
-    const [selectedTravel, setSelectedTravel] = useState<number[]>([]);
+interface TravelSelectProps {
+    value: number[];
+    onChange: (value: number[]) => void;
+}
 
+export function TravelSelect({ value, onChange }: TravelSelectProps) {
     const handleSelect = (index: number) => {
-        if (selectedTravel.includes(index)) {
-            setSelectedTravel(selectedTravel.filter(i => i !== index));
+        if (value.includes(index)) {
+            onChange(value.filter(i => i !== index));
         } else {
-            setSelectedTravel([...selectedTravel, index]);
+            onChange([...value, index]);
         }
     };
 
@@ -24,7 +26,7 @@ export function TravelSelect() {
                         type='button'
                         onClick={() => handleSelect(index)}
                         className={`aspect-[98/72] flex flex-col items-center justify-center rounded-[12px] transition-all ${
-                            selectedTravel.includes(index)
+                            value.includes(index)
                                 ? 'bg-[#4466D1] text-white'
                                 : 'bg-white text-gray-900 hover:bg-gray-50'
                         }`}

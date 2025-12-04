@@ -108,7 +108,7 @@ html,body {
 
 @layer components {
   .card-input-form {
-    @apply flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10
+    @apply flex-1 flex flex-col gap-6 bg-[#F6F6F6] rounded-[20px] px-5 py-8
   }
 }
 

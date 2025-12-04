@@ -1,16 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CardDetailView } from '@/shared/ui/card-detail-view';
 import { Button } from '@/shared/ui/button';
 import { TIME_SEASON } from '@/features/cardThema/time/constant/season';
-import { TasteForm } from '@/features/cardThema/time/ui/season-form';
+import { createActivity } from '@/features/activity';
+import { scanQrCode } from '@/features/card';
+import { initialSeasonData, type SeasonData } from '@/features/cardThema/time/types';
+
+const QR_CODE = 'CD-006';
 
 export default function CardOfFeaturePage() {
     const router = useRouter();
-    const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
-    const [selectedTaste, setSelectedTaste] = useState<number | null>(null);
+    const [formData, setFormData] = useState<SeasonData>(initialSeasonData);
+    const [cardId, setCardId] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchCardId = async () => {
+            try {
+                const card = await scanQrCode(QR_CODE);
+                setCardId(card.id);
+            } catch (error) {
+                console.error('카드 조회 실패:', error);
+            }
+        };
+        fetchCardId();
+    }, []);
+
+    const handleNext = async () => {
+        if (!cardId) {
+            console.error('카드 ID를 찾을 수 없습니다');
+            router.push('/time/cd-007');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await createActivity({
+                cardId,
+                activityResult: formData,
+            });
+            router.push('/time/cd-007');
+        } catch (error) {
+            console.error('활동 저장 실패:', error);
+            router.push('/time/cd-007');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
@@ -21,10 +60,7 @@ export default function CardOfFeaturePage() {
                 description='내가 좋아하는 계절이 있나요?'
                 frontImage='/cards-time/season.svg'
             />
-            {/* MARK: 입력 폼 */}
-            {/* TODO: feature or widget로 분리 */}
-            <div className='flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10'>
-                {/* MARK: 자연 */}
+            <div className='flex-1 flex flex-col gap-6 bg-[#F6F6F6] rounded-[20px] px-5 py-8'>
                 <section>
                     <h1 className='text-lg font-semibold mb-4'>내가 좋아하는 계절은?</h1>
                     <div className='grid grid-cols-2 gap-3'>
@@ -32,9 +68,9 @@ export default function CardOfFeaturePage() {
                             <button
                                 key={index}
                                 type='button'
-                                onClick={() => setSelectedSeason(index)}
+                                onClick={() => setFormData({ ...formData, season: index })}
                                 className={`w-full aspect-[149/80] rounded-[12px] flex flex-col items-center justify-center gap-1 transition-all ${
-                                    selectedSeason === index
+                                    formData.season === index
                                         ? 'bg-[#4466D1] text-white'
                                         : 'bg-white text-gray-900 hover:bg-gray-50'
                                 }`}
@@ -46,7 +82,6 @@ export default function CardOfFeaturePage() {
                     </div>
                 </section>
 
-                {/* MARK: 동물 */}
                 <section>
                     <h1 className='text-lg font-semibold mb-4'>그 계절에 내가 가장 좋아하는 맛은?</h1>
                     <div className='grid grid-cols-3 gap-3'>
@@ -54,9 +89,9 @@ export default function CardOfFeaturePage() {
                             <button
                                 key={index}
                                 type='button'
-                                onClick={() => setSelectedTaste(index)}
+                                onClick={() => setFormData({ ...formData, taste: index })}
                                 className={`w-full aspect-[149/80] rounded-[12px] flex flex-col items-center justify-center gap-1 transition-all ${
-                                    selectedTaste === index
+                                    formData.taste === index
                                         ? 'bg-[#4466D1] text-white'
                                         : 'bg-white text-gray-900 hover:bg-gray-50'
                                 }`}
@@ -68,14 +103,16 @@ export default function CardOfFeaturePage() {
                     </div>
                 </section>
             </div>
-            
-            {/* TODO: 글 내려쓰기 구현-> FormList 변경 해야 할 것 같아서 보류
-            <TasteForm data={...} onChange={...} />
-            */}
+
             <footer className='w-full flex gap-4 mt-5'>
-                <Button className='flex-1 py-[19px] rounded-[12px]' onClick={()=>router.push('/time/cd-007')}>다음으로</Button>
+                <Button
+                    className='flex-1 py-[19px] rounded-[12px]'
+                    onClick={handleNext}
+                    disabled={isLoading}
+                >
+                    {isLoading ? '저장 중...' : '다음으로'}
+                </Button>
             </footer>
         </>
-
     );
 }

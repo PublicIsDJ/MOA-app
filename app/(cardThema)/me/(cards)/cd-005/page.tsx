@@ -61,7 +61,7 @@ export default function CardOfSoundPage() {
                 frontImage='/cards-me/sound.svg'
             />
 
-            <main className='flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10'>
+            <main className='flex-1 flex flex-col gap-6 bg-[#F6F6F6] rounded-[20px] px-5 py-8'>
                 {/* MARK: 목소리 톤 */}
                 <section>
                     <h1 className='text-lg font-semibold mb-4'>나의 목소리 톤은?</h1>
@@ -130,7 +130,7 @@ export default function CardOfSoundPage() {
 
             </main>
 
-            <footer className='w-full flex gap-5 mt-5 mb-25'>
+            <footer className='w-full flex gap-5 mt-6 pb-4'>
                 <Button status='inactive' className='flex-1 py-[19px] rounded-[12px]' onClick={() => router.back()}>이전으로</Button>
                 <Button
                     className='flex-1 py-[19px] rounded-[12px]'

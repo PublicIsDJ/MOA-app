@@ -62,7 +62,7 @@ export default function CardOfFeaturePage() {
             />
             {/* MARK: 입력 폼 */}
             {/* TODO: feature or widget로 분리 */}
-            <div className='flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10'>
+            <div className='flex-1 flex flex-col gap-6 bg-[#F6F6F6] rounded-[20px] px-5 py-8'>
                 {/* MARK: 자연 */}
                 <section>
                     <h1 className='text-lg font-semibold mb-4'>자연에 비유한 나의 성격은?</h1>
