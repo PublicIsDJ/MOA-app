@@ -76,21 +76,19 @@ export default function OnboardingPage() {
       </div>
 
       {/* 메인 콘텐츠 */}
-      <div className="flex flex-1 flex-col">
-        <div className="flex-1 overflow-y-auto">
-          <div className="flex h-full flex-col items-center justify-center text-center px-6">
-            <div className="text-5xl mb-6 md:mb-8">{step.emoji}</div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-3 md:text-[28px] md:leading-9">
-              {step.title}
-            </h1>
-            <p className="text-center text-gray-500 text-sm leading-relaxed whitespace-pre-line md:text-base">
-              {step.description}
-            </p>
-          </div>
+      <div className="flex flex-1 flex-col items-center">
+        <div className="flex flex-1 flex-col items-center justify-center text-center px-6">
+          <div className="text-5xl mb-6 md:mb-8">{step.emoji}</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-3 md:text-[28px] md:leading-9">
+            {step.title}
+          </h1>
+          <p className="text-center text-gray-500 text-sm leading-relaxed whitespace-pre-line md:text-base">
+            {step.description}
+          </p>
         </div>
 
         {/* 하단 버튼 */}
-        <div className="w-full flex flex-col items-center gap-3 mt-10 pb-[env(safe-area-inset-bottom)]">
+        <div className="w-full flex flex-col items-center gap-3 mt-8 pb-[env(safe-area-inset-bottom)]">
           <Button
             status="default"
             className="py-[12px] rounded-[12px] max-w-[320px]"
