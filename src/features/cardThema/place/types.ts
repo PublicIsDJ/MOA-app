@@ -37,10 +37,11 @@ export interface IslandData {
 // cd-015: 나의 마지막
 export interface MyLastData {
     [key: string]: string | number | null;
+    lastMeal: string;           // 마지막 식사
     lastPlace: string;          // 마지막 날 있고 싶은 곳
     lastPerson: string;         // 마지막을 함께할 사람
-    reborn: string;             // 다시 태어난다면
     funeral: number | null;     // 장례 방식 (0-2)
+    funeralCustom: string;      // 장례식 커스텀 텍스트
     organDonation: number | null; // 장기 기증 (0-1)
 }
 
@@ -82,10 +83,11 @@ export const initialIslandData: IslandData = {
 };
 
 export const initialMyLastData: MyLastData = {
+    lastMeal: '',
     lastPlace: '',
     lastPerson: '',
-    reborn: '',
     funeral: null,
+    funeralCustom: '',
     organDonation: null,
 };
 
