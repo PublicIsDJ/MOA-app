@@ -120,7 +120,7 @@ export default function ProfileEditPage() {
     if (isChecking || isLoading) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen full-bleed bg-white px-5 pt-12 pb-10">
+        <div className="min-h-screen full-bleed bg-white px-2 pt-12 pb-10">
             <HeaderWithBefore title="내정보 수정" fallbackPath="/profile" />
 
             {/* MARK: 프로필 이미지 */}

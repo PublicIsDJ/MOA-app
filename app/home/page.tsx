@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className="min-h-screen flex flex-col items-center bg-[#EDEDED] full-bleed pb-[88px]">
             <div className="w-full max-w-[430px] flex flex-col flex-1">
                 <Header/>
-                <main className="flex-1 w-full pb-8 px-5 space-y-5">
+                <main className="flex-1 w-full pb-8 px-2 space-y-5">
                   <div className='border-t border-[#9C9C9C]/20 rounded-[12px]'/>
                     <BannerCarousel />
                     <MissionCard />
@@ -49,7 +49,7 @@ export default function HomePage() {
 
 function Header({ className }: { className?: string }) {
     return (
-        <header className={`px-5 pt-6 pb-4 flex items-center justify-between ${className ?? ''}`}>
+        <header className={`px-2 pt-6 pb-4 flex items-center justify-between ${className ?? ''}`}>
             <span className="text-xl font-bold  text-[#4D57FE]">MOA</span>
             <div className="flex items-center gap-4 text-[#9E9E9E]">
                 {headerIcons.map(({ id, label, icon: Icon, href }) => (
@@ -128,7 +128,7 @@ function BannerCarousel() {
                         return (
                             <div
                                 key={`${banner.id}-${index}`}
-                                className={`${banner.bgColor} min-w-full px-6 py-8 text-white`}
+                                className={`${banner.bgColor} min-w-full px-2 py-8 text-white`}
                             >
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-xl font-bold leading-snug whitespace-pre-line">
@@ -166,7 +166,7 @@ function BannerCarousel() {
 // MARK: 서비스 준비중 플레이스홀더
 function MissionCard() {
     return (
-        <section className="bg-white rounded-[22px] px-6 py-8 shadow-sm">
+        <section className="bg-white rounded-[22px] px-2 py-8 shadow-sm">
             <div className="flex flex-col items-center text-center">
                 <ConstructionIcon className="w-10 h-10 text-[#F59E0B] mb-3" />
                 <h3 className="text-base font-semibold text-gray-900">서비스 준비중</h3>

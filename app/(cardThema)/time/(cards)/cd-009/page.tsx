@@ -23,7 +23,7 @@ export default function CardOfFriendPage() {
                 frontImage='/cards-time/friend.svg'
             />
             {/* TODO: feature or widget로 분리 */}
-            <div className='flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-6 py-10'>
+            <div className='flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10'>
                 {/* MARK: 자연 */}
                 <FriendForm></FriendForm>
                 

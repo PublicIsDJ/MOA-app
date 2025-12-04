@@ -223,12 +223,12 @@ export default function ArchivePage() {
     return (
         <div className="min-h-screen flex flex-col bg-[#EDEDED] full-bleed pb-[88px]">
             <div className="w-full max-w-[430px] mx-auto flex flex-col flex-1">
-                <header className="px-5 py-6">
+                <header className="px-2 py-6">
                     <h1 className="text-2xl font-bold text-gray-900">나의 활동 기록</h1>
                     <p className="text-gray-500 mt-1">완료한 카드 미션을 확인해보세요</p>
                 </header>
 
-                <main className="flex-1 px-5">
+                <main className="flex-1 px-2">
                     {isLoading ? (
                         <div className="flex items-center justify-center py-20">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4E73FF]" />

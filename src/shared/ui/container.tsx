@@ -9,7 +9,7 @@ interface Props {
 // TODO: 반응형 잡기
 export function Container({ children, className}: Props) {
     return (
-        <div className={`${className} w-full h-full px-[16px]`}>
+        <div className={`${className} w-full h-full px-[8px]`}>
             {children}
         </div>
     )

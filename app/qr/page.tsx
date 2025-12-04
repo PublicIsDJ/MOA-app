@@ -170,7 +170,7 @@ export default function QrPage() {
             )}
 
             {/* MARK: 헤더 */}
-            <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 py-4 pt-12 z-20 bg-gradient-to-b from-black/60 to-transparent">
+            <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-2 py-4 pt-12 z-20 bg-gradient-to-b from-black/60 to-transparent">
                 <Link href="/home" aria-label="뒤로가기" className="w-10 h-10 flex items-center justify-center rounded-full bg-black/30 text-white text-2xl">
                     ‹
                 </Link>
@@ -203,7 +203,7 @@ export default function QrPage() {
 
             {/* MARK: 하단 안내 */}
             {!isNavigating && (
-                <div className="absolute bottom-0 left-0 right-0 px-6 pb-10 pt-16 z-20 bg-gradient-to-t from-black via-black/80 to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 px-2 pb-10 pt-16 z-20 bg-gradient-to-t from-black via-black/80 to-transparent">
                     {error ? (
                         <p className="text-red-400 text-center mb-4">{error}</p>
                     ) : (

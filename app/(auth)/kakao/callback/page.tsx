@@ -64,7 +64,7 @@ function KakaoCallbackContent() {
   // 에러 발생 시
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen px-6">
+      <div className="flex flex-col items-center justify-center min-h-screen px-2">
         <p className="text-red-500 text-center mb-4">{error}</p>
         <button
           type="button"

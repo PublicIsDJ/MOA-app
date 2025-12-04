@@ -178,12 +178,12 @@ export default function ProfilePage() {
         <div className="min-h-screen flex flex-col items-center bg-[#EDEDED] full-bleed pb-[88px]">
             <div className="w-full max-w-[430px] flex flex-col flex-1">
                 {/* MARK: 헤더 */}
-                <header className="px-5 pt-12 pb-4 flex items-center justify-center">
+                <header className="px-2 pt-12 pb-4 flex items-center justify-center">
                     <span className="text-xl font-bold text-gray-900">내 정보</span>
                 </header>
 
                 {/* MARK: 프로필 카드 */}
-                <div className="px-5">
+                <div className="px-2">
                 <div className="flex flex-col items-center gap-4">
                     {/* 이미지 업로드 영역 */}
                     <div className="relative">
@@ -222,7 +222,7 @@ export default function ProfilePage() {
             </div>
 
             {/* MARK: 통계 영역 */}
-            <div className="px-5 mt-4">
+            <div className="px-2 mt-4">
                 <div className="bg-white rounded-2xl p-5 shadow-sm">
                     <div className="flex items-center justify-center">
                         {/* 총 학습한 카드 */}
@@ -246,7 +246,7 @@ export default function ProfilePage() {
             </div>
 
             {/* MARK: 서비스 준비중 카드 */}
-            <div className="px-5 mt-4">
+            <div className="px-2 mt-4">
                 <div className="bg-white rounded-2xl p-5 shadow-sm flex flex-col items-center justify-center gap-2">
                     <span className="text-2xl">🚧</span>
                     <p className="text-gray-500 text-sm">서비스 준비중입니다</p>
@@ -255,7 +255,7 @@ export default function ProfilePage() {
 
                 {/* MARK: 에러 메시지 */}
                 {error && (
-                    <div className="px-5 mt-4">
+                    <div className="px-2 mt-4">
                         <p className="text-center text-red-500 text-sm">{error}</p>
                     </div>
                 )}

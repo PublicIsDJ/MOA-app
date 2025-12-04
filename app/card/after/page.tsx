@@ -25,7 +25,7 @@ export default function AfterCard() {
     if (isChecking) return <AuthLoading />;
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+        <div className="relative min-h-screen flex flex-col items-center justify-between bg-white px-2 py-10">
             <AuthHeader title="완료" className="mt-5" />
 
             <div className="flex-1 flex flex-col items-center justify-center">
@@ -72,7 +72,7 @@ export default function AfterCard() {
                     />
 
                     <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-6">
-                        <div className="relative w-full max-w-sm rounded-3xl bg-white px-6 pt-10 pb-8 text-center shadow-xl">
+                        <div className="relative w-full max-w-sm rounded-3xl bg-white px-2 pt-10 pb-8 text-center shadow-xl">
                             <button
                                 type="button"
                                 className="absolute right-4 top-4 text-gray-400"

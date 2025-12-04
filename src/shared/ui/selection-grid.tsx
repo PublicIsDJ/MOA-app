@@ -76,7 +76,7 @@ interface SelectionFormContainerProps {
 
 export function SelectionFormContainer({ children, className = '' }: SelectionFormContainerProps) {
     return (
-        <div className={`flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-6 py-10 ${className}`}>
+        <div className={`flex-1 flex flex-col gap-8 bg-[#F6F6F6] rounded-[20px] px-2 py-10 ${className}`}>
             {children}
         </div>
     );

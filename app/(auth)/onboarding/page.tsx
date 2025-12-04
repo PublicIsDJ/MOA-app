@@ -47,7 +47,7 @@ export default function OnboardingPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-2 py-10">
             {/* 인디케이터 */}
             <div className="flex justify-center mt-4 space-x-2">
                 {steps.map((_, index) => (

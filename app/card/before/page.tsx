@@ -17,7 +17,7 @@ export default function BeforeGuidePage() {
     if (isChecking) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-2 py-10">
 
             <div className="w-full grid grid-cols-3 flex items-center justify-center">
                 <BeforeButton status="default" size={28} className='py-10' />
