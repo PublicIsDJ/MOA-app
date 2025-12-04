@@ -221,7 +221,7 @@ export default function ArchivePage() {
     if (isChecking) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F8F9FF] to-[#F0F0F0] full-bleed pb-[88px]">
+        <div className="min-h-screen flex flex-col bg-[#EDEDED] full-bleed pb-[88px]">
             <div className="w-full max-w-[430px] mx-auto flex flex-col flex-1">
                 <header className="px-5 py-6">
                     <h1 className="text-2xl font-bold text-gray-900">나의 활동 기록</h1>

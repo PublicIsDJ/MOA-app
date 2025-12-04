@@ -175,14 +175,15 @@ export default function ProfilePage() {
     if (isChecking || isLoading) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen full-bleed flex flex-col bg-[#F5F5F5] pb-[80px]">
-            {/* MARK: 헤더 */}
-            <header className="px-5 pt-12 pb-4 flex items-center justify-center">
-                <span className="text-xl font-bold text-gray-900">내 정보</span>
-            </header>
+        <div className="min-h-screen flex flex-col items-center bg-[#EDEDED] full-bleed pb-[88px]">
+            <div className="w-full max-w-[430px] flex flex-col flex-1">
+                {/* MARK: 헤더 */}
+                <header className="px-5 pt-12 pb-4 flex items-center justify-center">
+                    <span className="text-xl font-bold text-gray-900">내 정보</span>
+                </header>
 
-            {/* MARK: 프로필 카드 */}
-            <div className="px-5">
+                {/* MARK: 프로필 카드 */}
+                <div className="px-5">
                 <div className="flex flex-col items-center gap-4">
                     {/* 이미지 업로드 영역 */}
                     <div className="relative">
@@ -252,13 +253,13 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            {/* MARK: 에러 메시지 */}
-            {error && (
-                <div className="px-5 mt-4">
-                    <p className="text-center text-red-500 text-sm">{error}</p>
-                </div>
-            )}
-
+                {/* MARK: 에러 메시지 */}
+                {error && (
+                    <div className="px-5 mt-4">
+                        <p className="text-center text-red-500 text-sm">{error}</p>
+                    </div>
+                )}
+            </div>
             <BottomNavigation />
         </div>
     );

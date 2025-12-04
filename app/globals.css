@@ -21,7 +21,7 @@
 } */
 
 html,body {
-  background: var(--background);
+  background: #f0f0f0; /* 모바일 규격 바깥 배경 */
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   height: 100%;
@@ -29,16 +29,23 @@ html,body {
   color-scheme: light;
 }
 
+/* MARK: PWA 안전 영역 (노치 대응) */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 
 @layer utils {
-  /* MARK: - 풀 블리드 (양쪽 끝까지 확장) */
+  /* MARK: - 풀 블리드 (컨테이너 패딩 무시하고 전체 너비 사용) */
   .full-bleed {
-    position: relative;
-    width: 100vw;
-    left:50%;
-    right:50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    width: calc(100% + 32px);
   }
 
   /* MARK: - 밑에서 올라오는 애니메이션 */

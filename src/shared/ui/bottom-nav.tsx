@@ -72,10 +72,10 @@ export function BottomNavigation({className = ''}: Props) {
         router.push(path);
     };
 
-    // MARK: 전체 컨테이너 (Safe Area 적용)
+    // MARK: 전체 컨테이너 (Safe Area 적용 + 모바일 규격)
     return (
         <div
-            className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-2px_8px_rgba(0,0,0,0.08)] ${className}`}
+            className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 bg-white border-t border-gray-200 shadow-[0_-2px_8px_rgba(0,0,0,0.08)] ${className}`}
             style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         >
             <div className="flex items-center justify-around py-2">

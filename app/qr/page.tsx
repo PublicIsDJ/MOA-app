@@ -266,7 +266,7 @@ export default function QrPage() {
                         className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300"
                         onClick={() => setIsModalOpen(false)}
                     />
-                    <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-50 p-6 pb-10 animate-slide-up">
+                    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white rounded-t-3xl z-50 p-6 pb-10 animate-slide-up">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-bold text-gray-900">카드 번호 직접 입력</h2>
                             <button

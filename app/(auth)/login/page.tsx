@@ -67,8 +67,8 @@ export default function LoginPage() {
     };
 
     return (
-        <div className='w-full flex flex-col items-center mt-[142px]'>
-            <h1 className='text-[#3E56F6] text-[48px] font-[700px] mb-[68px]'>MOA</h1>
+        <div className='min-h-screen w-full flex flex-col items-center justify-center py-10'>
+            <h1 className='text-[#3E56F6] text-[48px] font-bold mb-12'>MOA</h1>
 
             <section id='login-form' className='w-full'>
                 <LoginForm formData={formData} onUpdatedField={updateFormField}/>
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 </Button>
             </section>
 
-            <TextRouter className='mt-[36px] mb-[72px]'/>
+            <TextRouter className='mt-9 mb-16'/>
 
             <button
                 type='button'
