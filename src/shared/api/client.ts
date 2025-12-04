@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAccessToken } from '@/features/auth/utils/token';
+import { getAccessToken, clearTokens } from '@/features/auth/utils/token';
 
 // MARK: API 기본 설정
 // TODO: 환경 변수 등록 필요
@@ -31,8 +31,19 @@ apiClient.interceptors.response.use(
     (error) => {
         // 401 Unauthorized - 토큰 만료 등
         if (error.response?.status === 401) {
-            // TODO: 토큰 갱신 또는 로그아웃 처리
-            console.error('인증 오류:', error.response.data);
+            clearTokens();
+
+            if (typeof window !== 'undefined') {
+                const LOGIN_PATH = '/login';
+                const currentPath = window.location.pathname;
+
+                if (currentPath !== LOGIN_PATH) {
+                    // 세션 만료 정보를 쿼리로 전달 (선택)
+                    const url = new URL(LOGIN_PATH, window.location.origin);
+                    url.searchParams.set('session', 'expired');
+                    window.location.href = url.toString();
+                }
+            }
         }
         return Promise.reject(error);
     }

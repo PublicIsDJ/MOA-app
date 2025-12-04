@@ -1,7 +1,7 @@
 'use client'
 
+import { useState, useCallback, useEffect } from 'react';
 import { LoginFormState, InitialLoginForm } from '@/features/auth/login/types';
-import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/features/auth/ui/login-form';
 import { Button } from '@/shared/ui/button';
@@ -15,6 +15,14 @@ export default function LoginPage() {
     const [formData, setFormData] = useState<LoginFormState>(InitialLoginForm);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('session') === 'expired') {
+            setError('세션이 만료되었습니다. 다시 로그인해주세요.');
+        }
+    }, []);
 
     const updateFormField = useCallback((field: keyof LoginFormState, value: string) => {
         setFormData(prev => ({
