@@ -442,7 +442,7 @@ export default function ArchivePage() {
                                                         )}
                                                         {/* 탭 힌트 */}
                                                         {isCurrent && !isFlipped && (
-                                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-400 bg-white/80 px-2 py-0.5 rounded-full">
+                                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-gray-500 bg-white/80 px-1.5 py-[2px] rounded-full">
                                                                 탭하여 내용 보기
                                                             </div>
                                                         )}
@@ -478,7 +478,7 @@ export default function ArchivePage() {
                                                                     <p className="text-white/80">내용이 없습니다</p>
                                                                 )}
                                                             </div>
-                                                            <p className="text-white/60 text-[10px] mt-2 text-center">
+                                                            <p className="text-white/60 text-[9px] mt-2 text-center">
                                                                 탭하여 돌아가기
                                                             </p>
                                                         </div>
