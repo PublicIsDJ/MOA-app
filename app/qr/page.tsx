@@ -33,6 +33,7 @@ export default function QrPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [qrCode, setQrCode] = useState('');
     const [isScanning, setIsScanning] = useState(false);
+    const [isNavigating, setIsNavigating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [scanResult, setScanResult] = useState<string | null>(null);
     const scannerRef = useRef<HTMLDivElement>(null);
@@ -53,24 +54,31 @@ export default function QrPage() {
     const navigateToCard = (cardId: string) => {
         const route = CARD_ROUTES[cardId];
         if (route) {
+            setIsNavigating(true);
             router.push(route);
         } else {
+            setIsNavigating(false);
+            setScanResult(null);
             setError(`알 수 없는 카드: ${cardId}`);
+            // 에러 시 스캐너 다시 시작
+            startScanner();
         }
     };
 
     // MARK: QR 스캔 성공 처리
     const onScanSuccess = async (decodedText: string) => {
         // 중복 스캔 방지
-        if (scanResult) return;
+        if (scanResult || isNavigating) return;
 
         setScanResult(decodedText);
+        setIsNavigating(true);
         setError(null);
 
         // 스캐너 정지
         if (html5QrCodeRef.current) {
             try {
                 await html5QrCodeRef.current.stop();
+                setIsScanning(false);
             } catch (e) {
                 console.log('Scanner already stopped');
             }
@@ -83,21 +91,25 @@ export default function QrPage() {
 
     // MARK: QR 스캐너 시작
     const startScanner = async () => {
-        if (!scannerRef.current) return;
+        if (!scannerRef.current || isNavigating) return;
 
         try {
             const { Html5Qrcode } = await import('html5-qrcode');
 
-            html5QrCodeRef.current = new Html5Qrcode('qr-reader');
+            // 기존 스캐너 정리
+            if (html5QrCodeRef.current) {
+                try {
+                    await html5QrCodeRef.current.stop();
+                } catch (e) {}
+            }
+
+            html5QrCodeRef.current = new Html5Qrcode('qr-reader', { verbose: false });
 
             await html5QrCodeRef.current.start(
                 { facingMode: 'environment' },
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                },
+                { fps: 10, qrbox: undefined }, // qrbox 제거 - 전체 화면 스캔
                 onScanSuccess,
-                () => {} // 에러 무시 (스캔 시도 중)
+                () => {}
             );
 
             setIsScanning(true);
@@ -113,19 +125,16 @@ export default function QrPage() {
         if (html5QrCodeRef.current) {
             try {
                 await html5QrCodeRef.current.stop();
-            } catch (e) {
-                console.log('Scanner stop error:', e);
-            }
+            } catch (e) {}
         }
         setIsScanning(false);
     };
 
     // MARK: 컴포넌트 마운트 시 자동 시작
     useEffect(() => {
-        if (!isChecking) {
+        if (!isChecking && !isNavigating) {
             startScanner();
         }
-
         return () => {
             stopScanner();
         };
@@ -135,6 +144,7 @@ export default function QrPage() {
     const handleSubmit = () => {
         if (!qrCode.trim()) return;
         setIsModalOpen(false);
+        setIsNavigating(true);
         const cardId = extractCardIdFromUrl(qrCode.trim());
         navigateToCard(cardId);
         setQrCode('');
@@ -143,60 +153,74 @@ export default function QrPage() {
     if (isChecking) return <AuthLoading />;
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center full-bleed">
-            <div className="w-full max-w-[430px] flex flex-col flex-1">
-                {/* MARK: 헤더 */}
-                <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 py-4 z-20">
-                    <Link href="/home" aria-label="뒤로가기" className="text-[28px] text-white drop-shadow-lg">
-                        ‹
-                    </Link>
-                    <h1 className="text-lg font-semibold drop-shadow-lg">QR 스캔</h1>
-                    <span className="w-6" />
-                </header>
+        <div className="fixed inset-0 bg-black text-white full-bleed">
+            {/* MARK: 카메라 영역 (전체 화면) */}
+            <div
+                id="qr-reader"
+                ref={scannerRef}
+                className="absolute inset-0 w-full h-full"
+            />
 
-                {/* MARK: QR 스캐너 영역 */}
-                <main className="flex-1 flex flex-col relative">
-                    <div
-                        id="qr-reader"
-                        ref={scannerRef}
-                        className="absolute inset-0 w-full h-full"
-                        style={{ minHeight: '100vh' }}
-                    />
+            {/* MARK: 로딩 오버레이 (QR 인식 후) */}
+            {isNavigating && (
+                <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
+                    <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mb-4" />
+                    <p className="text-white text-lg font-medium">카드 페이지로 이동 중...</p>
+                </div>
+            )}
 
-                    {/* 스캔 가이드 오버레이 */}
-                    {isScanning && (
-                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
-                            <div className="w-64 h-64 border-2 border-white/50 rounded-2xl relative">
-                                {/* 코너 강조 */}
-                                <div className="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-[#4E73FF] rounded-tl-lg" />
-                                <div className="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-[#4E73FF] rounded-tr-lg" />
-                                <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-[#4E73FF] rounded-bl-lg" />
-                                <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-[#4E73FF] rounded-br-lg" />
-                            </div>
-                        </div>
+            {/* MARK: 헤더 */}
+            <header className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 py-4 pt-12 z-20 bg-gradient-to-b from-black/60 to-transparent">
+                <Link href="/home" aria-label="뒤로가기" className="w-10 h-10 flex items-center justify-center rounded-full bg-black/30 text-white text-2xl">
+                    ‹
+                </Link>
+                <h1 className="text-lg font-semibold">QR 스캔</h1>
+                <span className="w-10" />
+            </header>
+
+            {/* MARK: 스캔 가이드 (중앙) */}
+            {isScanning && !isNavigating && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    {/* 어두운 배경 마스크 */}
+                    <div className="absolute inset-0 bg-black/50" />
+
+                    {/* 투명한 스캔 영역 */}
+                    <div className="relative w-64 h-64">
+                        {/* 스캔 영역 (투명하게 뚫림) */}
+                        <div className="absolute inset-0 bg-black/50" style={{
+                            boxShadow: '0 0 0 9999px rgba(0,0,0,0.5)',
+                        }} />
+                        <div className="absolute inset-0 bg-transparent border-2 border-white/30 rounded-2xl" />
+
+                        {/* 코너 강조 */}
+                        <div className="absolute -top-0.5 -left-0.5 w-10 h-10 border-t-4 border-l-4 border-[#4E73FF] rounded-tl-2xl" />
+                        <div className="absolute -top-0.5 -right-0.5 w-10 h-10 border-t-4 border-r-4 border-[#4E73FF] rounded-tr-2xl" />
+                        <div className="absolute -bottom-0.5 -left-0.5 w-10 h-10 border-b-4 border-l-4 border-[#4E73FF] rounded-bl-2xl" />
+                        <div className="absolute -bottom-0.5 -right-0.5 w-10 h-10 border-b-4 border-r-4 border-[#4E73FF] rounded-br-2xl" />
+                    </div>
+                </div>
+            )}
+
+            {/* MARK: 하단 안내 */}
+            {!isNavigating && (
+                <div className="absolute bottom-0 left-0 right-0 px-6 pb-10 pt-16 z-20 bg-gradient-to-t from-black via-black/80 to-transparent">
+                    {error ? (
+                        <p className="text-red-400 text-center mb-4">{error}</p>
+                    ) : (
+                        <p className="text-center text-white/80 mb-4">
+                            {isScanning ? 'QR 코드를 프레임 안에 맞춰주세요' : '카메라를 시작하는 중...'}
+                        </p>
                     )}
 
-                    {/* 스캔 안내 */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 pb-10 z-10">
-                        {error ? (
-                            <p className="text-red-400 text-center mb-4">{error}</p>
-                        ) : (
-                            <p className="text-center text-white/80 mb-4">
-                                {isScanning ? 'QR 코드를 화면 중앙에 맞춰주세요' : '카메라를 시작하는 중...'}
-                            </p>
-                        )}
-
-                        {/* 직접 입력 버튼 */}
-                        <button
-                            type="button"
-                            onClick={() => setIsModalOpen(true)}
-                            className="w-full py-3 text-center text-sm text-white/60 underline underline-offset-2"
-                        >
-                            QR 코드가 인식되지 않나요? 직접 입력
-                        </button>
-                    </div>
-                </main>
-            </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full py-3 text-center text-sm text-white/60 underline underline-offset-2"
+                    >
+                        QR 코드가 인식되지 않나요? 직접 입력
+                    </button>
+                </div>
+            )}
 
             {/* MARK: QR 번호 입력 바텀시트 */}
             {isModalOpen && (
