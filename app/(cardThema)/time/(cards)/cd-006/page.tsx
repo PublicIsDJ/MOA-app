@@ -69,7 +69,9 @@ export default function CardOfFeaturePage() {
                 </section>
             </div>
             
-            <TasteForm></TasteForm> {/* TODO: 글 내려쓰기 구현-> FormList 변경 해야 할 것 같아서 보류*/}
+            {/* TODO: 글 내려쓰기 구현-> FormList 변경 해야 할 것 같아서 보류
+            <TasteForm data={...} onChange={...} />
+            */}
             <footer className='w-full flex gap-4 mt-5'>
                 <Button className='flex-1 py-[19px] rounded-[12px]' onClick={()=>router.push('/time/cd-007')}>다음으로</Button>
             </footer>

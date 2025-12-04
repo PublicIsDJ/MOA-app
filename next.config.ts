@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
 
+// API 서버 URL 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: [
     'http://localhost:3000',
@@ -10,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://49.50.131.100:8000/api/:path*',
+        destination: `${API_BASE_URL}/api/:path*`,
       },
     ];
   },

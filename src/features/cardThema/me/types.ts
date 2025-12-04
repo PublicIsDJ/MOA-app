@@ -2,6 +2,7 @@
 
 // cd-001: 내가 태어난 날
 export interface BirthData {
+    [key: string]: string;      // 인덱스 시그니처
     birthday: string;           // 생일
     birthYear: string;          // 태어난 해 (그 해의 사건)
     birthSeason: string;        // 태어난 계절
@@ -11,6 +12,7 @@ export interface BirthData {
 
 // cd-002: 나의 이름
 export interface NameData {
+    [key: string]: string;      // 인덱스 시그니처
     name: string;               // 나의 이름
     nameMeaning: string;        // 이름이 가진 의미
     nameGiver: string;          // 이름을 지어준 사람

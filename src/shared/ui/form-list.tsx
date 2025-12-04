@@ -10,7 +10,7 @@ interface FormField {
 
 interface FormListProps {
     fields: FormField[];
-    values: Record<string, string>;
+    values: { [key: string]: string };
     onChange: (key: string, value: string) => void;
     className?: string;
 }
