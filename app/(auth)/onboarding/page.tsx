@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/shared/ui/button";
+import { redirectToKakaoLogin } from '@/features/auth/api/kakao-auth';
+import Image from 'next/image';
 
 // 온보딩 스텝 데이터
 const steps = [
@@ -96,6 +98,26 @@ export default function OnboardingPage() {
           >
             {isLastStep ? "회원가입" : "다음으로"}
           </Button>
+          {isLastStep && (
+            <div className="w-full flex flex-col items-center gap-3  pb-[env(safe-area-inset-bottom)]">
+            <button
+                type='button'
+                onClick={redirectToKakaoLogin}
+                className='w-full max-w-[320px] rounded-[12px] py-[12px] flex items-center justify-center gap-2 bg-[#FEE500] hover:bg-[#FDD800] transition-colors'
+            >
+                <div className='relative w-6 h-6'>
+                    <Image
+                        src='/ic_kakao.svg'
+                        alt='카카오 로고'
+                        fill
+                        className='object-contain'
+                    />
+                </div>
+                <p className='text-[#000000de] font-medium'>카카오로 로그인하기</p>
+            </button>
+            </div>
+          )
+          }
 
           {isLastStep && (
             <button
